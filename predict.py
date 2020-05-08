@@ -6,7 +6,7 @@ import numpy as np
 import CONSTANTS
 
 
-model_name = './models/startAtBestThu_May__7_21:52:50_2020.hdf5'
+model_name = './models/startAtBestThu_May__7_23:13:38_2020.hdf5'
 
 
 startT = time.asctime().replace(" ","_")
