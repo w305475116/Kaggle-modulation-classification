@@ -2,7 +2,7 @@ import csv
 import time
 import h5py
 from keras.callbacks import Callback, ModelCheckpoint
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout
 from keras.layers import Embedding
 from keras.layers import Conv1D, GlobalAveragePooling1D, MaxPooling1D
@@ -49,13 +49,14 @@ model.compile(loss='categorical_crossentropy',
 # model = load_model("models/Tue_May__5_14:50:42_2020")
 startT = time.asctime().replace(" ","_")
 checkpointer = ModelCheckpoint(filepath='./models/startAtBest' + startT + '.hdf5', verbose=1, save_best_only=True)
-history = model.fit(x_train, y_train, validation_split=0.25, batch_size=16, epochs=1, callbacks=[checkpointer])
-finishT = time.asctime().replace(" ","_")
-model.save("./models/"+finishT)
+history = model.fit(x_train, y_train, validation_split=0.25, batch_size=16, epochs=15, callbacks=[checkpointer])
+# finishT = time.asctime().replace(" ","_")
+# model.save("./models/"+finishT)
+model = load_model('./models/startAtBest' + startT + '.hdf5')
 y_test = model.predict_classes(x_test)
 # print(y_test)
 
-with open('./predicts/'+finishT+'.csv', 'w') as csvfile:
+with open('./predicts/'+startT+'.csv', 'w') as csvfile:
     filewriter = csv.writer(csvfile, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
     filewriter.writerow(['Id', 'Category'])
@@ -70,7 +71,7 @@ plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
 plt.show()
-plt.savefig('./plots/'+finishT+'acc.png')
+plt.savefig('./plots/'+startT+'acc.png')
 
 # 绘制训练 & 验证的损失值
 plt.plot(history.history['loss'])
@@ -80,4 +81,4 @@ plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
 plt.show()
-plt.savefig('./plots/'+finishT+'err.png')
+plt.savefig('./plots/'+startT+'err.png')
