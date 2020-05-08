@@ -54,7 +54,6 @@ history = model.fit(x_train, y_train, validation_split=0.25, batch_size=16, epoc
 # model.save("./models/"+finishT)
 model = load_model('./models/startAtBest' + startT + '.hdf5')
 y_test = model.predict_classes(x_test)
-# print(y_test)
 
 with open('./predicts/'+startT+'.csv', 'w') as csvfile:
     filewriter = csv.writer(csvfile, delimiter=',',
