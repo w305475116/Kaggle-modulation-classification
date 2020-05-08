@@ -6,9 +6,8 @@ import numpy as np
 import CONSTANTS
 
 
-model_name = './models/startAtBestThu_May__7_23:13:38_2020.hdf5'
 
-
+model_name ='./models/startAtBestFri_May__8_12:23:53_2020.hdf5'
 startT = time.asctime().replace(" ","_")
 f = h5py.File("./dataset/data.hdf5", 'r')
 x_test =  np.array(f['test'])
