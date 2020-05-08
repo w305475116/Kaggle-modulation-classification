@@ -52,8 +52,6 @@ model.compile(loss='categorical_crossentropy',
 startT = time.asctime().replace(" ","_")
 checkpointer = ModelCheckpoint(filepath='./models/startAtBest' + startT + '.hdf5', verbose=1, save_best_only=True)
 history = model.fit(x_train, y_train, validation_split=0.25, batch_size=16, epochs=30, callbacks=[checkpointer])
-# finishT = time.asctime().replace(" ","_")
-# model.save("./models/"+finishT)
 model = load_model('./models/startAtBest' + startT + '.hdf5')
 y_test = model.predict_classes(x_test)
 
