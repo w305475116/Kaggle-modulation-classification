@@ -50,7 +50,7 @@ def simple_model():
 
 # model = load_model("models/Tue_May__5_14:50:42_2020")
 startT = time.asctime().replace(" ","_")
-checkpointer = ModelCheckpoint(filepath='./models/startAtBest' + startT + '.hdf5', verbose=1, save_best_only=True)
+# checkpointer = ModelCheckpoint(filepath='./models/startAtBest' + startT + '.hdf5', verbose=1, save_best_only=True)
 # history = model.fit(x_train, y_train, validation_split=0.25, batch_size=16, epochs=30, callbacks=[checkpointer])
 # model = load_model('./models/startAtBest' + startT + '.hdf5')
 ann_estimator = KerasRegressor(build_fn= simple_model, epochs=20, batch_size=16, verbose=1,

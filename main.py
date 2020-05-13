@@ -4,8 +4,8 @@ import h5py
 from keras.callbacks import Callback, ModelCheckpoint
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout
-from keras.layers import Embedding
-from keras.layers import Conv1D, GlobalAveragePooling1D, MaxPooling1D
+from keras.layers.normalization import BatchNormalization
+from keras.layers import Conv1D, GlobalAveragePooling1D, MaxPooling1D, Activation
 import numpy as np
 import pandas as pd
 import CONSTANTS
@@ -29,17 +29,41 @@ y_train = to_categorical(np.array(y_train), num_classes=10)
 
 
 model = Sequential()
-model.add(Conv1D(128, 3, activation='relu', input_shape=(1024, 2)))
-model.add(Conv1D(128, 3, activation='relu'))
-model.add(Conv1D(128, 3, activation='relu'))
-model.add(Conv1D(128, 3, activation='relu'))
+model.add(Conv1D(128, 3, input_shape=(1024, 2)))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+model.add(Conv1D(128, 3))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+model.add(Conv1D(128, 3))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+model.add(Conv1D(128, 3))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+model.add(Conv1D(128, 3))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+
 model.add(MaxPooling1D(3))
-model.add(Conv1D(128, 3, activation='relu'))
-model.add(Conv1D(128, 3, activation='relu'))
-model.add(Conv1D(128, 3, activation='relu'))
-model.add(Conv1D(128, 3, activation='relu'))
+
+model.add(Conv1D(128, 3))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+model.add(Conv1D(128, 3))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+model.add(Conv1D(128, 3))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+model.add(Conv1D(128, 3))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+model.add(Conv1D(128, 3))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
 model.add(GlobalAveragePooling1D())
-model.add(Dropout(0.5))
+model.add(Dropout(0.25))
 # model.add(Dense(2048, activation='relu'))
 model.add(Dense(10, activation='softmax'))
 
@@ -51,7 +75,7 @@ model.compile(loss='categorical_crossentropy',
 # model = load_model("models/Tue_May__5_14:50:42_2020")
 startT = time.asctime().replace(" ","_")
 checkpointer = ModelCheckpoint(filepath='./models/startAtBest' + startT + '.hdf5', verbose=1, save_best_only=True)
-history = model.fit(x_train, y_train, validation_split=0.25, batch_size=16, epochs=30, callbacks=[checkpointer])
+history = model.fit(x_train, y_train, validation_split=0.25, batch_size=16, epochs=20, callbacks=[checkpointer])
 model = load_model('./models/startAtBest' + startT + '.hdf5')
 y_test = model.predict_classes(x_test)
 
@@ -82,3 +106,5 @@ plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
 plt.savefig('./plots/'+startT+'err.png')
 plt.show()
+
+
