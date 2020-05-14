@@ -3,12 +3,12 @@ import time
 import h5py
 from keras.callbacks import Callback, ModelCheckpoint
 from keras.models import Sequential, load_model
-from keras.layers import Dense, Dropout
+from keras.layers import Dense, Dropout, Activation
+from keras.layers import Embedding
+from keras.layers import Conv1D, GlobalAveragePooling1D, MaxPooling1D
 from keras.layers.normalization import BatchNormalization
-from keras.layers import Conv1D, GlobalAveragePooling1D, MaxPooling1D, Activation
 import numpy as np
 import pandas as pd
-import CONSTANTS
 from keras.utils import to_categorical
 import matplotlib.pyplot as plt
 
@@ -29,45 +29,10 @@ y_train = to_categorical(np.array(y_train), num_classes=10)
 
 
 model = Sequential()
-model.add(Conv1D(128, 3, input_shape=(1024, 2)))
+# model.add(Embedding(10, 128,input_length = x_train.shape[1], dropout = 0.2))
+model.add(LSTM(100, input_shape =(1024,2)))
 model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(Conv1D(128, 3))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(Conv1D(128, 3))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(Conv1D(128, 3))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(Conv1D(128, 3))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-
-model.add(MaxPooling1D(3))
-
-model.add(Conv1D(128, 3))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(Conv1D(128, 3))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(Conv1D(128, 3))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(Conv1D(128, 3))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(Conv1D(128, 3))
-model.add(BatchNormalization())
-model.add(Activation('relu'))
-model.add(GlobalAveragePooling1D())
-model.add(Dropout(0.25))
-# model.add(Dense(2048, activation='relu'))
-model.add(Dense(10, activation='softmax'))
-
-# keras.optimizers.RMSprop(learning_rate=0.001, rho=0.9)
+model.add(Dense(10,activation='softmax'))
 model.compile(loss='categorical_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
